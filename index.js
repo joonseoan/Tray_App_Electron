@@ -5,6 +5,8 @@ const electron = require('electron');
 // It generates working paths to the operating sysem.
 const path = require('path');
 
+const TimerTray = require('./app/timer_tray');
+
 
 // "Tray" is a component of electron 
 //  to deploy the app icon on the Window tray.
@@ -12,8 +14,10 @@ const path = require('path');
 //  and that OSX has a tray at the top in defulat. 
 const {
     app,
-    BrowserWindow,
-    Tray
+    BrowserWindow
+    
+    // Deleting "Tray" as we have child class, TimerTray of "app" folder
+    // Tray
 } = electron;
 
 let mainWindow;
@@ -22,7 +26,9 @@ let mainWindow;
 //  to create an event that the user clicks the icon 
 //  to populate the app window.
 // Then, we can make the event handler anywhere.
-let tray;
+
+    // delete because of the child class
+// let tray;
 
 app.on('ready', () => {
 
@@ -64,14 +70,24 @@ app.on('ready', () => {
     const iconPath = path.join(__dirname, `./src/assets/${ iconName }`);
 
     // Then, the "path" will be passed throutg "Tray" object.
-    tray = new Tray(iconPath);
+    // Without, the child class
+    // 1)
+    // tray = new Tray(iconPath);
+
+    // With TimerTray class
+    // 2) 
+    
+    // We do not need "tray" anymore becauseof child class
+    // tray = new TimerTray(iconPath, mainWindow);
+    new TimerTray(iconPath, mainWindow);
 
     // Then, make an event handler like "app.on()""
     //  that the user clicks on the icon.
     // 'click' is a built-in key reference in Electron.
     // 1)
-    /*
+    /* because of the child class
     tray.on ('click', () => {
+
 
 
         // If the user clicks the icon,
@@ -99,6 +115,12 @@ app.on('ready', () => {
     // "bounds" informs us the coordinate value (x, y) of the icon
     //  and size information (height, widht) of the icon.
     // ***** The return value of "bounds" is an object.
+
+    /*
+
+    // Delete this section because we made TrayTimer class 
+    //      which is a child class of "Tray"
+
     tray.on('click', (event, bounds) => {
 
         // => bounds:  { x: 1115, y: 688, width: 40, height: 40 }
@@ -148,9 +170,14 @@ app.on('ready', () => {
 
         } else {
 
+            */
+
+            /* because of child class
 
             // "setBounds()" sets up height and width and position info 
             mainWindow.setBounds({
+            
+            */
 
                 // for OSX 
                 // make sure the tray is on the top of the screen in default.
@@ -183,6 +210,8 @@ app.on('ready', () => {
                 height,
                 width
                 */
+               
+                /* because of child class
 
                 // for window amd OSX           
                 // use yPosition
@@ -194,8 +223,9 @@ app.on('ready', () => {
             })
 
             mainWindow.show();
-        }
+        } 
 
-    });
+    }); 
+    */
 
 });
